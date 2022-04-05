@@ -53,9 +53,9 @@ def sumar_horas(horas_start, horas_duration, hora_a_sumar_por_minutero, meridian
                 suma_horas = horas_start + horas_duration
                 horas_duration = 0
             
-            suma_horas, meridiano_nuevo = chequeador_pasado_meridiano(suma_horas, meridiano)
+            suma_horas, meridiano = chequeador_pasado_meridiano(suma_horas, meridiano)
         
-        return (suma_horas, meridiano_nuevo)
+        return (suma_horas, meridiano)
     
     else:
         return (horas_start, meridiano)
