@@ -5,7 +5,7 @@ def add_time(start, duration, dia = None):
     minutos_nuevos, horas_a_sumar_por_minutos = sumar_minutos(minutos_start, minutos_duration)
     hora_nueva, meridiano_nuevo = sumar_horas(horas_start, horas_duration, horas_a_sumar_por_minutos, meridiano_start)
 
-    hora_nueva = f'Returns: {hora_nueva}:{minutos_nuevos} {meridiano_nuevo}'
+    hora_nueva = f'Returns: {hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}'
 
     return hora_nueva
 
@@ -24,30 +24,41 @@ def time_formatting(start, duration):
     return (horas_start, minutos_start, meridiano_start, horas_duration, minutos_duration)
 
 def sumar_minutos(minutos_start, minutos_duration):
-    suma_minutos = minutos_duration + minutos_start
+    if minutos_duration > 0:
+        suma_minutos = minutos_duration + minutos_start
 
-    if suma_minutos >= 60:
-        cantidad_de_horas_en_los_minutos = suma_minutos // 60
-        suma_minutos -= (cantidad_de_horas_en_los_minutos * 60)
+        if suma_minutos >= 60:
+            cantidad_de_horas_en_los_minutos = suma_minutos // 60
+            suma_minutos -= (cantidad_de_horas_en_los_minutos * 60)
 
+        else:
+            cantidad_de_horas_en_los_minutos = 0
+
+        return (suma_minutos, cantidad_de_horas_en_los_minutos)
+    
     else:
-        cantidad_de_horas_en_los_minutos = 0
-
-    return (suma_minutos, cantidad_de_horas_en_los_minutos)
+        return (minutos_start, 0)
 
 def sumar_horas(horas_start, horas_duration, hora_a_sumar_por_minutero, meridiano):
-    while horas_duration > 0:
-        if horas_duration >= 12:
-            suma_horas = horas_start + 12
-            horas_duration -= 12
+    horas_duration += hora_a_sumar_por_minutero
+
+    if horas_duration != 0:
+        pasos_de_dias = 0
+        while horas_duration > 0:
+            if horas_duration >= 12:
+                suma_horas = horas_start + 12
+                horas_duration -= 12
+            
+            else:
+                suma_horas = horas_start + horas_duration
+                horas_duration = 0
+            
+            suma_horas, meridiano_nuevo = chequeador_pasado_meridiano(suma_horas, meridiano)
         
-        else:
-            suma_horas = horas_start + horas_duration
-            horas_duration = 0
-        
-        meridiano_nuevo = chequeador_pasado_meridiano(suma_horas, meridiano)
+        return (suma_horas, meridiano_nuevo)
     
-    return (suma_horas, meridiano_nuevo)
+    else:
+        return (horas_start, meridiano)
 
 def chequeador_pasado_meridiano(hora, meridiano_actual):
     if hora > 12:
@@ -58,12 +69,12 @@ def chequeador_pasado_meridiano(hora, meridiano_actual):
         
         elif meridiano_actual == 'PM':
             meridiano_nuevo = 'AM'
-            cambiar_dia()
+            # cambiar_dia() y agregar uno
     
-        return meridiano_nuevo 
+        return hora, meridiano_nuevo 
 
     else:
-        return meridiano_actual
+        return hora, meridiano_actual
 
 def cambiar_dia(dia):
     diccionario_dias = {'Monday': 'Tuesday', 'Tuesday': 'Wednesday', 'Wednesday': 'Thursday', \
