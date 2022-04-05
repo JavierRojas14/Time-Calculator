@@ -61,8 +61,11 @@ def sumar_horas(horas_start, horas_duration, hora_a_sumar_por_minutero, meridian
         return (horas_start, meridiano)
 
 def chequeador_pasado_meridiano(hora, meridiano_actual):
-    if hora > 12:
-        hora -= 12
+    if hora >= 12:
+        if hora > 12:
+            hora -= 12
+        else:
+            pass
 
         if meridiano_actual == 'AM':
             meridiano_nuevo = 'PM'
