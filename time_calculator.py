@@ -7,9 +7,9 @@ def add_time(start, duration, dia = None):
                                                          meridiano_i, dia) 
 
     if dia_nuevo != None:
-        hora_nueva = f'Returns: {hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}, {dia_nuevo}'
+        hora_nueva = f'{hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}, {dia_nuevo}'
     else:
-        hora_nueva = f'Returns: {hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}'
+        hora_nueva = f'{hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}'
 
 
     return hora_nueva
