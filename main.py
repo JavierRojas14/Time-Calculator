@@ -1,15 +1,9 @@
 from time_calculator import add_time
 
-
-#problema = ('3:00 PM', '3:10')
-#problema = ("11:43 AM", "00:20")
-#problema = ('01:20 PM', '12:00')
-problema = ('5:53 AM', '12:07')
-#problema = ('11:59 PM', '00:01')
-
-problemas = [('3:00 PM', '3:10'), ('11:43 PM', '00:20'), ('01:20 PM', '12:00'), ('5:53 AM', '12:07'),
-             ('11:59 PM', '00:01')]
+problemas = [('3:00 PM', '3:10'), ('11:43 PM', '00:20'), ('01:20 PM', '36:00'), ('5:53 AM', '12:07'),
+             ('11:59 PM', '24:01'), ("11:30 AM", "2:32", "Monday"), ("11:43 PM", "24:20", "tueSday")]
 
 for i in problemas:
-    print(add_time(i[0], i[1]))
+    if len(i) == 3:
+        print(add_time(i[0], i[1], i[2]))
 
