@@ -7,7 +7,8 @@ def add_time(start, duration, dia = None):
                                                          meridiano_i, dia) 
 
     if dia_nuevo != None:
-        hora_nueva = f'{hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}, {dia_nuevo}'
+        hora_nueva = f'{hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}{dia_nuevo}'
+
     else:
         hora_nueva = f'{hora_nueva}:{minutos_nuevos:02} {meridiano_nuevo}'
 
@@ -29,35 +30,33 @@ def time_formatting(start, duration):
     return (horas_i, minutos_i, meridiano_i, horas_d, minutos_d)
 
 def sumar_minutos(minutos_i, minutos_d):
-    if minutos_d > 0:
-        suma_minutos = minutos_d + minutos_i
+    horas_a_sumar_por_minutos = 0
+    suma_minutos = minutos_d + minutos_i
 
-        if suma_minutos >= 60:
-            cantidad_de_horas_en_los_minutos = suma_minutos // 60
-            suma_minutos -= (cantidad_de_horas_en_los_minutos * 60)
+    if suma_minutos >= 60:
+        horas_a_sumar_por_minutos += suma_minutos // 60
+        suma_minutos -= (horas_a_sumar_por_minutos * 60)
 
-        else:
-            cantidad_de_horas_en_los_minutos = 0
+    return suma_minutos, horas_a_sumar_por_minutos
 
-        return (suma_minutos, cantidad_de_horas_en_los_minutos)
-    
-    else:
-        return (minutos_i, 0)
 
-def sumar_horas(horas_i, horas_d, hora_a_sumar_por_minutero, meridiano, dia_actual = False):
-    horas_d += hora_a_sumar_por_minutero
+def sumar_horas(horas_i, horas_d, horas_a_sumar_por_minutero, meridiano, dia_actual = False):
+    horas_a_sumar_totales = horas_d + horas_a_sumar_por_minutero
+    # Se le va a ir sumando a horas_i
 
-    if horas_d != 0:
+    if horas_a_sumar_totales != 0:
 
         pasos_de_dias = 0
-        while horas_d > 0:
-            if horas_d >= 12:
+        while horas_a_sumar_totales > 0:
+            if horas_a_sumar_totales >= 12:
+                horas_a_sumar_totales -= 12
+
+
                 suma_horas = horas_i + 12
-                horas_d -= 12
             
             else:
-                suma_horas = horas_i + horas_d
-                horas_d = 0
+                suma_horas = horas_i + horas_a_sumar_totales
+                horas_a_sumar_totales = 0
             
             suma_horas, meridiano, cambio_dia = chequeador_pasado_meridiano(suma_horas, meridiano)
 
@@ -67,19 +66,19 @@ def sumar_horas(horas_i, horas_d, hora_a_sumar_por_minutero, meridiano, dia_actu
         
         if pasos_de_dias >= 1:
             if pasos_de_dias == 1:
-                mensaje = f'(next day)'
+                mensaje = f' (next day)'
             
             else:
-                mensaje = f'({pasos_de_dias} days later)'
+                mensaje = f' ({pasos_de_dias} days later)'
 
             if dia_actual:
                 nuevo_dia = cambiar_dia(dia_actual, pasos_de_dias)
                 
-                mensaje = f'{nuevo_dia} {mensaje}'
+                mensaje = f', {nuevo_dia}{mensaje}'
         
         else:
             if dia_actual:
-                mensaje = dia_actual.capitalize()
+                mensaje = f', {dia_actual.capitalize()}'
             else:
                 mensaje = None
 
